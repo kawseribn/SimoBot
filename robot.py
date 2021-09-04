@@ -36,8 +36,6 @@ class ROBOT:
             if 'BackLeg' in jointName:
                 #print(self.motors[jointName].frequency)
                 self.motors[jointName].frequency = c.LegFrequency/2
-                #print(self.motors[jointName].frequency)
-            #print(jointName)
     def ACT(self,t):
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
@@ -45,13 +43,13 @@ class ROBOT:
 
                 jointName = self.nn.Get_Joint_Name(neuronName)
                 self.motors[jointName].Set_Value(desiredAngle,self.robot)
-                print(neuronName,desiredAngle)
+               
                 
-        '''for i in self.motors.keys():
-            self.motors[i].Set_Value(t,self.robot)
-            #print(self.motors[i])'''
 
     def Think(self):
         self.nn.Update()
-        self.nn.Print()
-        
+        #self.nn.Print()
+    
+    def Get_Fitness(self):
+        return p.getLinkState(self.robot,0)
+
