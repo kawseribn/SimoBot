@@ -13,4 +13,4 @@ LegPhaseOffset = 0
 
 
 timeStep = 1000
-sleep = 1/20
+sleep = 1/240
