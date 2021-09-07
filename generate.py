@@ -1,4 +1,3 @@
-from os import link
 import pyrosim.pyrosim as pyrosim
 import random
 
@@ -10,17 +9,31 @@ def Create_World():
 
 
 def Generate_Body():
-    x,y,z = 1,1,1
-    pyrosim.Start_URDF("body.urdf")
-    pyrosim.Send_Cube(name="Torso", pos=[1.5,0,1.5] , size=[x,y,z])
-    pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , 
-        type = "revolute", position = "1 0.0 1")
-    pyrosim.Send_Cube(name="BackLeg", pos=[-0.5,0,-0.5] , size=[x,y,z])
-    pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , 
-        type = "revolute", position = "2 0.0 1")
-    pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[x,y,z])
+    # x,y,z = 1,1,1
+    # pyrosim.Start_URDF("body.urdf")
+    # pyrosim.Send_Cube(name="Torso", pos=[1.5,0,1.5] , size=[x,y,z])
+    # pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , 
+    #     type = "revolute", position = "1 0.0 1")
+    # pyrosim.Send_Cube(name="BackLeg", pos=[-0.5,0,-0.5] , size=[x,y,z])
+    # pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , 
+    #     type = "revolute", position = "2 0.0 1")
+    # pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[x,y,z])
     
+    # pyrosim.End()
+    pyrosim.Start_URDF("body.urdf")
+    # Robot Torso
+    pyrosim.Send_Cube(name="Torso", pos=[1.5, 0, 1.5], size=[length, width, height])
+    # Connect BackLeg to Torso with one joint
+    pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", type="revolute", position="2.0 0.0 1.0")
+    # Robot FrontLeg
+    pyrosim.Send_Cube(name="FrontLeg", pos=[0.5, 0, -0.5], size=[length, width, height])
+    # Connect FrontLeg to Torso with a second joint.
+    pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", type="revolute", position="1.0 0.0 1.0")
+    # The other BackLeg
+    pyrosim.Send_Cube(name="BackLeg", pos=[-0.5, 0, -0.5], size=[length, width, height])
+    # End
     pyrosim.End()
+
 
 def Generate_Brain():
     pyrosim.Start_NeuralNetwork("brain.nndf")

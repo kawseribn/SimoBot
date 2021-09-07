@@ -2,20 +2,23 @@ import pyrosim.pyrosim as pyrosim
 import pybullet as p
 
 from pyrosim.neuralNetwork import NEURAL_NETWORK
-
+import os
 
 from sensor import SENSOR
 from motor import MOTOR
 import constants as c
+
 class ROBOT:
-    def __init__(self):
+    def __init__(self, solutionID):
         self.sensors = {}
         self.motors = {}
+        self.solutionID = solutionID
         self.robot = p.loadURDF("body.urdf")
         pyrosim.Prepare_To_Simulate("body.urdf")
-        self.nn = NEURAL_NETWORK("brain.nndf")
+        self.nn = NEURAL_NETWORK("brain"+str(self.solutionID)+".nndf")
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
+        os.system('del brain'+str(self.solutionID)+'.nndf')
 
     def Prepare_To_Sense(self):
         for linkName in pyrosim.linkNamesToIndices:
@@ -50,6 +53,17 @@ class ROBOT:
         self.nn.Update()
         #self.nn.Print()
     
-    def Get_Fitness(self):
-        return p.getLinkState(self.robot,0)
+    def Get_Fitness(self, solutionID):
+        stateOfLinkZero = p.getLinkState(self.robot,0)
+        positionOfLinkZero = stateOfLinkZero[0]
+        xCoordinateOfLinkZero = positionOfLinkZero[0]
+        # print(stateOfLinkZero)
+        # print(positionOfLinkZero)
+        # print(xCoordinateOfLinkZero)
+        f = open("tmp"+str(solutionID)+".txt", "w")
+        f.write(str(xCoordinateOfLinkZero))
+        f.close()
+        temp = "tmp"+str(solutionID)+".txt" 
+        file =  "fitness"+str(solutionID)+".txt"
+        os.system('rename '+temp+' '+file)
 

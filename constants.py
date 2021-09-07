@@ -14,4 +14,5 @@ LegPhaseOffset = 0
 
 timeStep = 1000
 sleep = 1/240
-numberOfGenerations = 5
+numberOfGenerations = 10
+populationSize = 10
