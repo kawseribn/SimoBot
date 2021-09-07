@@ -2,24 +2,27 @@ import pybullet as p
 import pybullet_data
 import constants as c
 import time 
-import numpy
 import pyrosim.pyrosim as pyrosim
 from world import WORLD
 from robot import ROBOT
 
 
 class SIMULATION:
-    def __init__(self,directOrGUI):
+    def __init__(self,directOrGUI, solutionID):
+        self.directOrGUI  = directOrGUI 
+        self.solutionID = solutionID
+
         if directOrGUI == 'DIRECT':
             self.physicsClient = p.connect(p.DIRECT)
         else:
             self.physicsClient = p.connect(p.GUI)
 
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        p.setGravity(0,0,-9.8)
+        p.setGravity(0, 0, -9.8)
+        
 
         self.world = WORLD()
-        self.robot = ROBOT()
+        self.robot = ROBOT(self.solutionID)
         
         
     def Run(self):
@@ -31,24 +34,19 @@ class SIMULATION:
 
 
         for i in range(c.timeStep):
+            if self.directOrGUI == 'GUI':
+                time.sleep(c.sleep)
             p.stepSimulation()
 
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.ACT(i)
             
-            time.sleep(c.sleep)
+            
+                     
     def Get_Fitness(self):
-        stateOfLinkZero = self.robot.Get_Fitness()
-        positionOfLinkZero = stateOfLinkZero[0]
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
-        # print(stateOfLinkZero)
-        # print(positionOfLinkZero)
-        # print(xCoordinateOfLinkZero)
-        f = open("fitness.txt", "w")
-        f.write(str(xCoordinateOfLinkZero))
-        f.close()
-        exit()
+        self.robot.Get_Fitness(self.solutionID)
+        
 
     def __del__(self):
         p.disconnect()

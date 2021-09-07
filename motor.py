@@ -7,14 +7,14 @@ import pybullet as p
 class MOTOR:
     def __init__(self, jointName):
         self.jointName = jointName
-        self.Prepare_To_Act()
+        #self.Prepare_To_Act()
         
-    def Prepare_To_Act(self):
-        self.amplitude = c.LegAmplitude
-        self.frequency = c.LegFrequency
-        self.offset = c.LegPhaseOffset
+    # def Prepare_To_Act(self):
+    #     self.amplitude = c.LegAmplitude
+    #     self.frequency = c.LegFrequency
+    #     self.offset = c.LegPhaseOffset
 
-        self.motorValues = self.amplitude * numpy.sin(numpy.linspace(-(self.frequency * numpy.pi) + self.offset,(self.frequency * numpy.pi) + self.offset, num=1000))
+    #     self.motorValues = self.amplitude * numpy.sin(numpy.linspace(-(self.frequency * numpy.pi) + self.offset,(self.frequency * numpy.pi) + self.offset, num=1000))
        #self.frontLegTargetAngles = self.frontLegAmplitude * numpy.sin(numpy.linspace(-(self.frontLegFrequency * numpy.pi) + self.frontLegPhaseOffset,(self.frontLegFrequency * numpy.pi) + self.frontLegPhaseOffset, num=1000))
         
     def Set_Value(self,desiredAngle,robot):
